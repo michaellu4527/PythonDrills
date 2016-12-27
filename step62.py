@@ -1,19 +1,16 @@
 from datetime import *
 import pytz
 
-# current_utc = datetime.now(tz)
-#
-# print (current_utc)
-
 # Function obtains the current time in Portland and returns whether the store branch is open or not
 
 def getPDXTime():
-    ptz = pytz.timezone('US/Pacific')
-    current_utc = datetime.now(pytz.timezone('UTC'))
+    ptz = pytz.timezone('US/Pacific')       # Gets pacific time zone
+    current_utc = datetime.now(pytz.timezone('UTC'))    # Use UTC so no conversion needed
     pacific_time = current_utc.astimezone(ptz)
-    pdx_time = pacific_time.strftime('%H:%M:%S')
+    pdx_time = pacific_time.strftime('%H:%M:%S')    # Convert integer format into string for concatenation
     print ("\nThe current time in Portland is: " + pdx_time)
 
+    # Determines whether branch is open or closed
     if (pacific_time.hour >= 9) & (pacific_time.hour < 21):
         print ("\nThe current branch in Portland HQ is open! We hope to see you.")
     else:
@@ -61,6 +58,7 @@ def getBranchInfo():
         if choice == 'p':
             getPDXTime()
             again = anotherChoice()
+            # Will determine whether or not to run the program again
             if (again == 'y'):
                 flag = 1
             elif (again == 'n'):
@@ -87,5 +85,8 @@ def getBranchInfo():
 def anotherChoice():
     choice = raw_input("\nDo you want to see if another branch is open? [y/n] ")
     return choice
+
+
+# Main program
 
 getBranchInfo()
