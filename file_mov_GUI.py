@@ -9,24 +9,28 @@ from tkinter import messagebox
 class fileTransfer:
 
     def __init__(self, master):
+        # ==================================== Header Content =========================================#
         # Set title of GUI
         master.title('Easy File Transfer')
-        master.resizable(False, False)
+        master.resizable(False, False)      # Make window unable to change in size
 
         self.frame_header = ttk.Frame(master)
-        self.frame_header.pack(fill=BOTH)  # Expands vertically and horizontally
+        self.frame_header.pack(fill=BOTH)   # Expands vertically and horizontally
 
+        # Header text
         ttk.Label(self.frame_header, text="Easy File Transfer Application", font="Times 16 bold").pack()
 
         self.frame_desc = ttk.Frame(master)
         self.frame_desc.pack(fill=BOTH)
 
+        # Short description, describing how to use the GUI to the user.
         ttk.Label(self.frame_desc, text=("First, select source and destination folders. Then, click 'Move Files' "
                                            "to move files that have been modified in the last 24 hours. ")).pack(padx=12, pady=15)
 
         self.frame_content = ttk.Frame(master)
         self.frame_content.pack(fill=BOTH)
 
+        #======================================== Buttons ============================================#
         ttk.Button(self.frame_content, text="Browse...",
                    command=lambda: self.getSource()).grid(row=0, column=0, padx=10, pady=10, sticky=W)
 
@@ -36,6 +40,8 @@ class fileTransfer:
         ttk.Button(self.frame_content, text="Move Files",
                    command=lambda: self.moveFiles()).grid(row=2, column=1, columnspan=2, padx=10, pady=10)
 
+
+        # ================================= Button Labels ============================================#
         ttk.Label(self.frame_content, text="Source Folder:").grid(row=0, column=1, padx=10, pady=3)
         self.src_text = StringVar()
         self.entry_src = ttk.Entry(self.frame_content, width=60, textvariable=self.src_text)
@@ -49,16 +55,16 @@ class fileTransfer:
         self.entry_dest.configure(state='readonly')
 
 
+    # ================================= Functions ============================================#
     def getSource(self):
         srcDirName = filedialog.askdirectory()
         self.src_text.set(srcDirName + '/')
-
 
     def getDest(self):
         dstDirName = filedialog.askdirectory()
         self.dest_text.set(dstDirName + '/')
 
-
+    # Function will move any files from the specified source to destination folder modified within the last 24 hours.
     def moveFiles(self):
         src = self.src_text.get()
         dst = self.dest_text.get()
