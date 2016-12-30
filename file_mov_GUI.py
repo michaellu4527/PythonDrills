@@ -90,9 +90,11 @@ class fileTransfer:
                 messagebox.showinfo("File Transfer", "Transfer successful! \n\nFiles that have been modified in the last 24 hours have been moved.")
                 count += 1  # Increments a counter to indicate a file has been moved
 
+        file_mov_functions.createDB()
+
         # Only change the Last File Check field whenever a file has been modified
         if count >= 1:
-            file_mov_functions.createDB()
+            file_mov_functions.insertDB()
 
         elif count == 0:  # No files have been moved, so print out message
             messagebox.showwarning("File Transfer", "Sorry, no files have been modified in the last 24 hours...")

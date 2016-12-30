@@ -13,8 +13,16 @@ def createDB():
         c.execute("CREATE TABLE IF NOT EXISTS Datetime("
                   "check_time REAL"
                   ")")
+
+        conn.commit()
+    conn.close()
+
+def insertDB():
+    conn = sqlite3.connect('file_check.db')
+    with conn:
+        c = conn.cursor()
         curr_time = datetime.datetime.now()
-        print (curr_time)
+        print(curr_time)
         c.execute("INSERT INTO Datetime VALUES(?)", (curr_time,))
         conn.commit()
     conn.close()
