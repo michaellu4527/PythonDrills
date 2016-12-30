@@ -5,7 +5,6 @@ from tkinter import *
 from tkinter import ttk
 from tkinter import filedialog
 from tkinter import messagebox
-import file_mov_functions
 
 class fileTransfer:
 
@@ -38,29 +37,26 @@ class fileTransfer:
         ttk.Button(self.frame_content, text="Browse...",
                    command=lambda: self.getDest()).grid(row=1, column=0, padx=10, pady=10, sticky=W)
 
+        ttk.Button(self.frame_content, text="Undo File Transfer",
+                   command=lambda: self.undoFT()).grid(row=2, column=1,columnspan=2,  padx=10, pady=10)
+
         ttk.Button(self.frame_content, text="Move Files",
-                   command=lambda: self.moveFiles()).grid(row=3, column=1, columnspan=2, padx=10, pady=10)
+                   command=lambda: self.moveFiles()).grid(row=2, column=2, columnspan=2, padx=10, pady=10)
 
 
         # ================================= Button Labels ============================================#
         ttk.Label(self.frame_content, text="Source Folder:").grid(row=0, column=1, padx=10, pady=3)
         self.src_text = StringVar()
         self.entry_src = ttk.Entry(self.frame_content, width=60, textvariable=self.src_text)
-        self.entry_src.grid(row=0, column=2, padx=10, pady=3, sticky=W+E)
+        self.entry_src.grid(row=0, column=2, columnspan=2, padx=10, pady=3, sticky=W+E)
         self.entry_src.configure(state='readonly')
 
         ttk.Label(self.frame_content, text="Destination Folder:").grid(row=1, column=1, padx=10, pady=3)
         self.dest_text= StringVar()
         self.entry_dest = ttk.Entry(self.frame_content, width=60, textvariable=self.dest_text)
-        self.entry_dest.grid(row=1, column=2, padx=10, pady=3, sticky=W+E)
+        self.entry_dest.grid(row=1, column=2, columnspan=2, padx=10, pady=3, sticky=W+E)
         self.entry_dest.configure(state='readonly')
 
-        ttk.Label(self.frame_content, text="Last File Check:").grid(row=2, column=1, padx=10, pady=13)
-        self.last_check = StringVar()
-        self.last_check.set(file_mov_functions.lastCheck())
-        self.entry_dst = ttk.Entry(self.frame_content, width=60, textvariable=self.last_check)
-        self.entry_dst.grid(row=2, column=2, padx=10, pady=3)
-        self.entry_dst.configure(state='readonly')
 
     # ================================= Functions ============================================#
     def getSource(self):
@@ -87,18 +83,33 @@ class fileTransfer:
                 abs_path3 = os.path.join(src, file_name)
                 shutil.move(abs_path3, dst)  # Moves file to new location
 
-                messagebox.showinfo("File Transfer", "Transfer successful! \n\nFiles that have been modified in the last 24 hours have been moved.")
+                messagebox.showinfo("File Transfer", "Operation successful! \n\nFiles that have been modified in the last 24 hours have been moved.")
                 count += 1  # Increments a counter to indicate a file has been moved
 
-        # Only change the Last File Check field whenever a file has been modified
-        if count >= 1:
-            file_mov_functions.createDB()
-
-        elif count == 0:  # No files have been moved, so print out message
+        if count == 0:  # No files have been moved, so print out message
             messagebox.showwarning("File Transfer", "Sorry, no files have been modified in the last 24 hours...")
 
+    def undoFT(self):
+        src = self.src_text.get()
+        dst = self.dest_text.get()
+        files = os.listdir(src)
+        count = 0
 
+        for file_name in files:  # Cycles through directory of files
+            abs_path1 = os.path.join(dst, file_name)
+            mod_time = os.path.getmtime(abs_path1)  # Gets time since last modification of file
+            check_time = time.time() - 86400  # Calculates time that was 24 hours prior
 
+            if mod_time >= check_time:  # File has been modified if it passes this check
+                abs_path3 = os.path.join(dst, file_name)
+                shutil.move(abs_path3, src)  # Moves file to new location
+
+                messagebox.showinfo("File Transfer",
+                                    "Operation successful! \n\nFiles that have been modified in the last 24 hours have been moved.")
+                count += 1  # Increments a counter to indicate a file has been moved
+
+        if count == 0:  # No files have been moved, so print out message
+            messagebox.showwarning("File Transfer", "Sorry, no files have been modified in the last 24 hours...")
 
 def main():
     root = Tk ()
