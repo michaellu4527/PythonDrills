@@ -97,8 +97,10 @@ class fileTransfer:
         elif count == 0:  # No files have been moved, so print out message
             messagebox.showwarning("File Transfer", "Sorry, no files have been modified in the last 24 hours...")
 
-
-
+        # Will update the last checked entry field with the new time when updated.
+        self.entry_dst.configure(state='normal')
+        self.last_check.set(file_mov_functions.lastCheck())
+        self.entry_dst.configure(state='readonly')
 
 def main():
     root = Tk ()

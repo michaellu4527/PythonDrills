@@ -92,7 +92,7 @@ class fileTransfer:
     def undoFT(self):
         src = self.src_text.get()
         dst = self.dest_text.get()
-        files = os.listdir(src)
+        files = os.listdir(dst)
         count = 0
 
         for file_name in files:  # Cycles through directory of files
@@ -105,11 +105,11 @@ class fileTransfer:
                 shutil.move(abs_path3, src)  # Moves file to new location
 
                 messagebox.showinfo("File Transfer",
-                                    "Operation successful! \n\nFiles that have been modified in the last 24 hours have been moved.")
+                                    "Success! Files have been transferred back to the original folder. ")
                 count += 1  # Increments a counter to indicate a file has been moved
 
         if count == 0:  # No files have been moved, so print out message
-            messagebox.showwarning("File Transfer", "Sorry, no files have been modified in the last 24 hours...")
+            messagebox.showwarning("File Transfer", "Sorry, no file transfer operation was detected recently.")
 
 def main():
     root = Tk ()

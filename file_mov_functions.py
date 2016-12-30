@@ -4,6 +4,8 @@ import time
 import datetime
 import sqlite3
 
+# Database creation and insertion of values
+
 def createDB():
     conn = sqlite3.connect('file_check.db')
     with conn:
@@ -17,6 +19,7 @@ def createDB():
         conn.commit()
     conn.close()
 
+# ================================= Functions ============================================#
 
 def lastCheck():
     conn = sqlite3.connect('file_check.db')
