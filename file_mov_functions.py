@@ -17,6 +17,8 @@ def createDB():
         conn.commit()
     conn.close()
 
+# Inserts new checked time into the database.
+
 def insertDB():
     conn = sqlite3.connect('file_check.db')
     with conn:
@@ -27,7 +29,7 @@ def insertDB():
         conn.commit()
     conn.close()
 
-# ================================= Functions ============================================#
+# This function selects the most recent time that a file has been modified.
 
 def lastCheck():
     conn = sqlite3.connect('file_check.db')
